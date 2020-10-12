@@ -1,0 +1,12 @@
+docker:
+  domain:
+    endpoint: localhost
+    port: 4444
+  tls:
+    enabled: false
+    certFile:
+    certKey:
+    caFile:
+  auth:
+    aKey: test
+    sKey: test
