@@ -1,0 +1,96 @@
+syntax = 'proto3';
+
+service Docker {
+    rpc Create (CreateDockerRequest) returns (CreateDockerResponse) {}
+    rpc Start  (StartDockerRequest) returns (StartDockerResponse) {}
+    rpc Suspend  (SuspendDockerRequest) returns (SuspendDockerResponse) {}
+    rpc Run (RunDockerRequest) returns (RunDockerResponse) {}
+
+    rpc Stop  (StopDockerRequest ) returns (StopDockerResponse) {}
+    rpc Close (CloseDockerRequest) returns (CloseDockerResponse) {}
+    rpc Info (InfoDockerRequest) returns (InfoDockerResponse) {}
+}
+
+message CreateDockerRequest {
+    message resources {
+        int32 memoryMB = 1;
+        float cpu = 2;
+    }
+    string 	image = 1;
+    map<string,string> envVars = 2;
+	map<string,string> portBindings = 3;
+    map<string,string> labels = 4;
+	repeated string mounts = 5;
+    resources resource = 6;
+    repeated string cmd = 7;
+    repeated string dns = 8;
+    repeated string usedPorts = 9;
+    bool useBridge = 10;
+}
+
+message CreateDockerResponse {
+    string msg = 1;
+    message Container {
+        string id = 1;
+        int32 state = 2;
+        string image = 3;
+        string type = 4;
+    }
+    Container container = 2;
+}
+
+message StartDockerRequest {
+    string id = 1;
+
+}
+
+message StartDockerResponse {
+    string msg = 1;
+}
+
+message StopDockerRequest {
+    string id = 1;
+}
+
+message StopDockerResponse {
+    string msg = 1;
+}
+
+message SuspendDockerRequest {
+    string id = 1;
+}
+
+message SuspendDockerResponse  {
+    string msg = 1;
+}
+
+message RunDockerRequest {
+
+}
+
+message RunDockerResponse {
+
+}
+
+message InfoDockerRequest {
+    string id = 1;
+
+}
+
+message InfoDockerResponse {
+    message Container {
+        string id = 1;
+        int32 state = 2;
+        string image = 3;
+        string type = 4;
+    }
+    Container container = 1;
+}
+
+message CloseDockerRequest {
+    string id = 1;
+}
+
+message CloseDockerResponse {
+    string msg = 1;
+}
