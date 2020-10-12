@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	fdocker "github.com/fsouza/go-dockerclient"
-	hkndocker "github.com/mrturkmencom/innerdocker/docker"
+	hkndocker "github.com/mrturkmencom/gdock/docker"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
