@@ -21,7 +21,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Config values endpoint %s, port %s\n", conf.Docker.Domain.Endpoint, conf.Docker.Domain.Port)
 	gRPCPort := strconv.FormatUint(uint64(conf.Docker.Domain.Port), 10)
 
 	lis, err := net.Listen("tcp", ":"+gRPCPort)
