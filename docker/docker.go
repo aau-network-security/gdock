@@ -132,7 +132,10 @@ type Identifier interface {
 type Container interface {
 	Identifier
 	Create(context.Context) error
+	Close() error
 	Info() InstanceInfo
+	Stop() error
+	Start(context.Context) error
 	BridgeAlias(string) (string, error)
 }
 

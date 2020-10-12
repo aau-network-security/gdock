@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	fdocker "github.com/fsouza/go-dockerclient"
-	hkndocker "github.com/mrturkmencom/gdock/docker"
+	d "github.com/mrturkmencom/gdock/docker"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -23,7 +23,7 @@ func init() {
 	zerolog.SetGlobalLevel(zerolog.Disabled)
 }
 
-func testCleanup(t *testing.T, c hkndocker.Container) func() {
+func testCleanup(t *testing.T, c d.Container) func() {
 	return func() {
 		err := c.Close()
 		if err != nil {
@@ -34,7 +34,7 @@ func testCleanup(t *testing.T, c hkndocker.Container) func() {
 
 func TestContainerBase(t *testing.T) {
 	// testing create. Do a long sleep to keep it alive
-	c1 := hkndocker.NewContainer(hkndocker.ContainerConfig{
+	c1 := d.NewContainer(d.ContainerConfig{
 		Cmd:   []string{"sleep", "1d"},
 		Image: "alpine",
 	})
@@ -111,7 +111,7 @@ func TestContainerBase(t *testing.T) {
 }
 
 func TestContainerContext(t *testing.T) {
-	c1 := hkndocker.NewContainer(hkndocker.ContainerConfig{
+	c1 := d.NewContainer(d.ContainerConfig{
 		Image: "alpine",
 	})
 
@@ -179,20 +179,20 @@ func TestErrorHostBinding(t *testing.T) {
 			hostIP:      "0.0.0.0",
 			hostPort:    "80",
 			guestPort:   "8080/tcp",
-			err:         hkndocker.InvalidHostBindingErr,
+			err:         d.InvalidHostBindingErr,
 		}, {
 			name:        "invalid protocol in host binding",
 			portBinding: map[string]string{"8080": "0.0.0.0:80/tcp"},
 			hostIP:      "",
 			hostPort:    "80",
 			guestPort:   "8080/tcp",
-			err:         hkndocker.InvalidHostBindingErr,
+			err:         d.InvalidHostBindingErr,
 		},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			c1 := hkndocker.NewContainer(hkndocker.ContainerConfig{
+			c1 := d.NewContainer(d.ContainerConfig{
 				Image:        "alpine",
 				PortBindings: tc.portBinding,
 			})
@@ -243,7 +243,7 @@ func TestErrorMem(t *testing.T) {
 			name:     "low memory",
 			memory:   49,
 			expected: 0,
-			err:      hkndocker.TooLowMemErr,
+			err:      d.TooLowMemErr,
 		}, {
 			name:     "exact memory",
 			memory:   50,
@@ -254,9 +254,9 @@ func TestErrorMem(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			c1 := hkndocker.NewContainer(hkndocker.ContainerConfig{
+			c1 := d.NewContainer(d.ContainerConfig{
 				Image: "alpine",
-				Resources: &hkndocker.Resources{
+				Resources: &d.Resources{
 					MemoryMB: tc.memory,
 					CPU:      5000,
 				}})
@@ -303,19 +303,19 @@ func TestErrorMount(t *testing.T) {
 			name:     "no mount point",
 			value:    "/myextratmp",
 			expected: "/myextratmp",
-			err:      hkndocker.InvalidMountErr,
+			err:      d.InvalidMountErr,
 		}, {
 			name:     "too many mount points",
 			value:    "/tmp:/myextratmp:/canihaveanotheroneplease",
 			expected: "/myextratmp",
-			err:      hkndocker.InvalidMountErr,
+			err:      d.InvalidMountErr,
 		},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			c1 := hkndocker.NewContainer(hkndocker.ContainerConfig{
-				Image:  "eyjhb/backup-rotate",
+			c1 := d.NewContainer(d.ContainerConfig{
+				Image:  "scratch",
 				Mounts: []string{tc.value},
 			})
 			if err := c1.Create(nil); err != nil {
