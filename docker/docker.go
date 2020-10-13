@@ -135,6 +135,7 @@ type Container interface {
 	Close() error
 	Info() InstanceInfo
 	Stop() error
+	Suspend() error
 	Start(context.Context) error
 	BridgeAlias(string) (string, error)
 }
@@ -388,7 +389,7 @@ func (c *container) Start(ctx context.Context) error {
 	return nil
 }
 
-func (c *container) Suspend(ctx context.Context) error {
+func (c *container) Suspend() error {
 	if err := DefaultClient.PauseContainer(c.id); err != nil {
 		log.Error().Str("ID", c.id[0:8]).Msgf("Failed to suspend container: %s", err)
 		return err

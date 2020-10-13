@@ -73,7 +73,7 @@ func (d *dockerservice) Suspend(ctx context.Context, req *pb.SuspendDockerReques
 	c := &container{
 		id: req.Id,
 	}
-	if err := c.Suspend(ctx); err != nil {
+	if err := c.Suspend(); err != nil {
 		return &pb.SuspendDockerResponse{}, err
 	}
 	return &pb.SuspendDockerResponse{Msg: fmt.Sprintf("Container is suspended with id %s", c.id)}, nil

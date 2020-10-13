@@ -66,7 +66,7 @@ func TestContainerBase(t *testing.T) {
 		t.Fatalf("expected container to have status running")
 	}
 
-	err = c1.Suspend(nil)
+	err = c1.Suspend()
 	if err != nil {
 		t.Fatalf("unable to suspend container: %s", err)
 	}
