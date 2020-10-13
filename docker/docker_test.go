@@ -315,7 +315,7 @@ func TestErrorMount(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			c1 := d.NewContainer(d.ContainerConfig{
-				Image:  "scratch",
+				Image:  "alpine",
 				Mounts: []string{tc.value},
 			})
 			if err := c1.Create(nil); err != nil {
